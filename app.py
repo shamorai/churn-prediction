@@ -13,8 +13,13 @@ st.set_page_config(page_title="Churn Dashboard", layout="wide")
 
 st.title("📊 Customer Churn Prediction System")
 
-st.markdown("### 🔎 Enter Customer Details")
+# st.markdown("### 🔎 Enter Customer Details")
+st.markdown("""
 
+### Predict customer behavior using Machine Learning
+
+👉 Enter customer details to check churn risk and understand key factors affecting the decision.
+""")
 col1, col2, col3 = st.columns(3)
 
 with col1:
@@ -44,12 +49,15 @@ input_scaled = scaler.transform(input_data)
 
 st.subheader("🔍 Prediction")
 
+
+
 if st.button("Predict Churn"):
 
+    # 👉 prediction yahi banta hai
     pred = model.predict(input_scaled)
     prob = model.predict_proba(input_scaled)
 
-    # ✅ Stylish Output (Correct Indentation)
+    # 👉 yahi use karna hai
     if pred[0] == 1:
         st.markdown(f"""
         <div style="background-color:#ff4b4b;padding:15px;border-radius:10px">
@@ -57,6 +65,9 @@ if st.button("Predict Churn"):
             <p style="color:white;">Probability: {round(prob[0][1]*100,2)}%</p>
         </div>
         """, unsafe_allow_html=True)
+
+        # ✅ explanation bhi yahi andar
+        st.warning("⚠️ This customer is likely to leave. Consider retention strategies.")
 
     else:
         st.markdown(f"""
@@ -66,14 +77,18 @@ if st.button("Predict Churn"):
         </div>
         """, unsafe_allow_html=True)
 
-    # 🔥 Optional Progress Bar
+        st.info("👍 This customer is stable. Maintain service quality.")
+
+    # 👉 progress bar bhi andar
     st.progress(int(prob[0][1]*100))
 
  
   # =========================
 # SHAP (SAFE FINAL FIX)
 # =========================
-st.subheader("🧠 Feature Impact (SHAP)")
+# st.subheader("🧠 Feature Impact (SHAP)")
+st.subheader("🧠 Why this prediction?")
+st.write("Below chart shows which features influenced the prediction.")
 
 explainer = shap.TreeExplainer(model)
 shap_values = explainer.shap_values(input_scaled)
